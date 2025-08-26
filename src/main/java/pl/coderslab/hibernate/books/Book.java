@@ -68,6 +68,12 @@ public class Book {
     public void setRating(int rating) {
         this.rating = rating;
     }
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
     @Override
     public String toString() {
         return title + " - " + isbn;

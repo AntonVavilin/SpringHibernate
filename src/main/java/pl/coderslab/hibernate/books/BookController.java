@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.hibernate.authors.Author;
 import pl.coderslab.hibernate.authors.AuthorDao;
+import pl.coderslab.hibernate.category.Category;
+import pl.coderslab.hibernate.category.CategoryRepository;
 import pl.coderslab.hibernate.publishers.Publisher;
 import pl.coderslab.hibernate.publishers.PublisherController;
 import pl.coderslab.hibernate.publishers.PublisherDao;
@@ -18,18 +20,27 @@ public class BookController {
     private final AuthorDao authorDao;
     private final PublisherDao publisherDao;
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
 
-    public BookController(BookDao bookDao, AuthorDao authorDao, PublisherDao publisherDao, BookRepository bookRepository) {
+    public BookController(BookDao bookDao, AuthorDao authorDao, PublisherDao publisherDao, BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookDao = bookDao;
         this.authorDao = authorDao;
         this.publisherDao = publisherDao;
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping("/create")
     public String createBook() {
+        Category category = new Category();
+        category.setName("Horror");
+        categoryRepository.save(category);
+
+
+
+
         Publisher publisher = new Publisher();
-        publisher.setName("Publisher 1");
+        publisher.setName("Publisher 2");
         publisherDao.save(publisher);
 
         List<Author> authors = new ArrayList<>();
@@ -38,9 +49,11 @@ public class BookController {
 
 
         Book book = new Book();
-        book.setTitle("Book Title");
+        book.setTitle("Jaws");
         book.setPublisher(publisher);
         book.setAuthors(authors);
+        book.setCategory(category);
+        book.setRating(4);
         bookDao.save(book);
         return "Id of book added to the database: " + book.getId();
     }
@@ -96,6 +109,23 @@ public class BookController {
         List<Book> books = bookRepository.findByTitle(title);
         books.forEach(b -> System.out.println(b.toString()));
         return books.toString();
-
+    }
+    @RequestMapping("/bookBy/{author_id}")
+    @ResponseBody
+    public String findByAuthor(@PathVariable("author_id") Long author_id) {
+        List<Book> bookList = bookRepository.findAllByAuthors_Id(author_id);
+        return bookList.toString();
+    }
+    @RequestMapping("/bookBy/publisher/{publisher_id}")
+    @ResponseBody
+    public String findByPublisher(@PathVariable("publisher_id") Long publisher_id) {
+        List<Book> bookList = bookRepository.findAllByPublisherId(publisher_id);
+        return bookList.toString();
+    }
+    @RequestMapping("/firstbook/{id}")
+    @ResponseBody
+    public String firstBook(@PathVariable("id") Long id) {
+        Book book1 = bookRepository.findFirstByCategoryIdOrderByTitle(id);
+        return book1.toString();
     }
 }
