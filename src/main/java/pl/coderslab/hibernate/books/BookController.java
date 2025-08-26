@@ -17,11 +17,13 @@ public class BookController {
     private final BookDao bookDao;
     private final AuthorDao authorDao;
     private final PublisherDao publisherDao;
+    private final BookRepository bookRepository;
 
-    public BookController(BookDao bookDao, AuthorDao authorDao, PublisherDao publisherDao) {
+    public BookController(BookDao bookDao, AuthorDao authorDao, PublisherDao publisherDao, BookRepository bookRepository) {
         this.bookDao = bookDao;
         this.authorDao = authorDao;
         this.publisherDao = publisherDao;
+        this.bookRepository = bookRepository;
     }
 
     @GetMapping("/create")
@@ -81,5 +83,19 @@ public class BookController {
         List<Book> all = bookDao.findAll();
         all.forEach(b -> System.out.println(b.toString()));
         return all.toString();
+    }
+    @RequestMapping("/test/findall")
+    @ResponseBody
+    public String testfindAll() {
+        bookRepository.findAll().forEach(System.out::println);
+        return "xxx";
+    }
+    @RequestMapping("/jpa/{title}")
+    @ResponseBody
+    public String findByTitle(@PathVariable("title") String title) {
+        List<Book> books = bookRepository.findByTitle(title);
+        books.forEach(b -> System.out.println(b.toString()));
+        return books.toString();
+
     }
 }

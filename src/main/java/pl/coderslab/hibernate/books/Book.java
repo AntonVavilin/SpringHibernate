@@ -2,6 +2,7 @@ package pl.coderslab.hibernate.books;
 
 import jakarta.persistence.*;
 import pl.coderslab.hibernate.authors.Author;
+import pl.coderslab.hibernate.category.Category;
 import pl.coderslab.hibernate.publishers.Publisher;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class Book {
     private List<Author> authors = new ArrayList<>();
     @ManyToOne
     private Publisher publisher;
+    @ManyToOne
+    private Category category;
 
     public Book() {
 
