@@ -1,13 +1,11 @@
 package pl.coderslab.hibernate.books;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.hibernate.authors.Author;
 import pl.coderslab.hibernate.authors.AuthorDao;
 import pl.coderslab.hibernate.category.Category;
 import pl.coderslab.hibernate.category.CategoryRepository;
 import pl.coderslab.hibernate.publishers.Publisher;
-import pl.coderslab.hibernate.publishers.PublisherController;
 import pl.coderslab.hibernate.publishers.PublisherDao;
 
 import java.util.ArrayList;
@@ -127,5 +125,23 @@ public class BookController {
     public String firstBook(@PathVariable("id") Long id) {
         Book book1 = bookRepository.findFirstByCategoryIdOrderByTitle(id);
         return book1.toString();
+    }
+    @RequestMapping("/byTitle/{title}")
+    @ResponseBody
+    public String bookByTitle(@PathVariable("title") String title) {
+        List<Book> bookList = bookRepository.findAllByTitle(title);
+        return bookList.toString();
+    }
+    @RequestMapping("/queryCategory/{category_id}")
+    @ResponseBody
+    public String queryCategory(@PathVariable("category_id") Long category_id) {
+        List<Book> bookList = bookRepository.findAllByCategory(String.valueOf(category_id));
+        return bookList.toString();
+    }
+    @RequestMapping("/queryRating/between/{a}/{b}")
+    @ResponseBody
+    public String queryRatingBetween(@PathVariable("a") int a, @PathVariable("b") int b) {
+        List<Book> bookList = bookRepository.findAllByRatingBetween(a,b);
+        return bookList.toString();
     }
 }

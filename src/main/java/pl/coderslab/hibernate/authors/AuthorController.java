@@ -21,10 +21,10 @@ public class AuthorController {
     @ResponseBody
     public String createAuthor() {
         Author author = new Author();
-        author.setFirstName("Jan");
-        author.setLastName("Kowalski");
-        author.setEmail("Jan@gmail.com");
-        author.setPesel("123456789");
+        author.setFirstName("Anton");
+        author.setLastName("Vavilin");
+        author.setEmail("Anton@gmail.com");
+        author.setPesel("8312312");
         authorDao.save(author);
         return "Author has been saved with an id:" + author.getId();
     }
@@ -71,6 +71,18 @@ public class AuthorController {
     @ResponseBody
     public String findAllLastname() {
         List<Author> authors = authorRepository.findAllByLastName("Kowalski");
+        return authors.toString();
+    }
+    @RequestMapping("/author/queryemail/{j}")
+    @ResponseBody
+    public String queryAuthorByEmail(@PathVariable String j) {
+        List<Author> authors = authorRepository.findAllByEmailStartsWith(j);
+        return authors.toString();
+    }
+    @RequestMapping("/author/querypesel/{pesel}")
+    @ResponseBody
+    public String queryAuthorByPesel(@PathVariable String pesel) {
+        List<Author> authors = authorRepository.findAllByPeselStartsWith(pesel);
         return authors.toString();
     }
 }
