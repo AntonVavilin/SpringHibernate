@@ -8,6 +8,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+import pl.coderslab.hibernate.AppConfig;
 
 public class AppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext container) throws ServletException {

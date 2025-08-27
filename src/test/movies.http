@@ -1,0 +1,11 @@
+### GET request to example server
+GET http://localhost:8080/api/movies
+
+###
+POST http://localhost:8080/api/movies
+Content-type: application/json
+Accept: application/json
+
+{
+  "title": "Inception"
+}
